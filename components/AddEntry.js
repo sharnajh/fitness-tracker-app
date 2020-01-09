@@ -31,7 +31,7 @@ export default class AddEntry extends Component {
       };
     });
   };
-  deccrement = metric => {
+  decrement = metric => {
     this.setState(state => {
       const count = state[metric] - getMetricMetaInfo(metric).step;
       return {
