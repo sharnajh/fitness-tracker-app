@@ -1,9 +1,17 @@
 import React, { Component } from "react";
-import { View } from "react-native";
-import { getMetricMetaInfo } from "../utils/helpers";
-import Slider from "./Slider";
-import Stepper from "./Stepper";
-import DateHeader from "./DateHeader"
+import { View, Text, TouchableOpacity } from "react-native";
+import { getMetricMetaInfo, timeToString } from "../utils/helpers";
+import UdaciSlider from "./UdaciSlider";
+import UdaciStepper from "./UdaciStepper";
+import DateHeader from "./DateHeader";
+
+function SubmitBtn({ onPress }) {
+  return (
+    <TouchableOpacity onPress={onPress}>
+      <Text>SUBMIT</Text>
+    </TouchableOpacity>
+  );
+}
 
 export default class AddEntry extends Component {
   state = {
@@ -37,33 +45,47 @@ export default class AddEntry extends Component {
       [metric]: newValue
     }));
   };
+  submit = () => {
+    const key = timeToString();
+    const entry = this.state;
+    this.setState(() => ({
+      run: 0,
+      bike: 0,
+      swim: 0,
+      sleep: 0,
+      eat: 0
+    }));
+  };
   render() {
-    const metainfo = getMetricMetaInfo();
+    const metaInfo = getMetricMetaInfo();
+
     return (
       <View>
-        <DateHeader date={(new Date()).toLocaleDateString()} />
-        {Object.keys(metainfo).map(key => {
-          const { getIcon, type, ...rest } = metainfo[key];
+        <DateHeader date={new Date().toLocaleDateString()} />
+        {Object.keys(metaInfo).map(key => {
+          const { getIcon, type, ...rest } = metaInfo[key];
           const value = this.state[key];
           return (
             <View key={key}>
               {getIcon()}
               {type === "slider" ? (
-                <Slider
+                <UdaciSlider
                   value={value}
                   onChange={value => this.slide(key, value)}
                   {...rest}
                 />
               ) : (
-                <Stepper
-                value={value}
-                onIncrement={(key) => this.increment(key)}
-                onDecrement={(key) => this.deccrement(key)}
-                {...rest} />
+                <UdaciStepper
+                  value={value}
+                  onIncrement={() => this.increment(key)}
+                  onDecrement={() => this.decrement(key)}
+                  {...rest}
+                />
               )}
             </View>
           );
         })}
+        <SubmitBtn onPress={this.submit} />
       </View>
     );
   }
