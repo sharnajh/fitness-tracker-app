@@ -13,11 +13,14 @@ import { createAppContainer } from "react-navigation";
 import { white, purple } from "./utils/colors";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import Constants from "expo-constants";
-import Live from "./components/Live"
+import Live from "./components/Live";
+import { setLocalNotification } from "./utils/helpers";
 
 function UdaciStatusBar({ backgroundColor, ...props }) {
   return (
-    <SafeAreaView style={{ backgroundColor, height: Constants.statusBarHeight }}>
+    <SafeAreaView
+      style={{ backgroundColor, height: Constants.statusBarHeight }}
+    >
       <StatusBar translucent backgroundColor={backgroundColor} {...props} />
     </SafeAreaView>
   );
@@ -77,6 +80,9 @@ const TabNav = createAppContainer(
 );
 
 export default class App extends Component {
+  componentDidMount() {
+    setLocalNotification()
+  }
   render() {
     return (
       <Provider store={createStore(reducer)}>
