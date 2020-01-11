@@ -13,6 +13,7 @@ import { createAppContainer } from "react-navigation";
 import { white, purple } from "./utils/colors";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import Constants from "expo-constants";
+import Live from "./components/Live"
 
 function UdaciStatusBar({ backgroundColor, ...props }) {
   return (
@@ -38,6 +39,15 @@ const Tabs = {
       tabBarLabel: "Add Entry",
       tabBarIcon: ({ tintColor }) => (
         <FontAwesome name="plus-square" size={30} color={tintColor} />
+      )
+    }
+  },
+  Live: {
+    screen: Live,
+    navigationOptions: {
+      tabBarLabel: "Live",
+      tabBarIcon: ({ tintColor }) => (
+        <Ionicons name="ios-speedometer" size={30} color={tintColor} />
       )
     }
   }
